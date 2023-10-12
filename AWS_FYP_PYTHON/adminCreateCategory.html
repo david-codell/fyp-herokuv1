@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register For Admin</title>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form id="categoryForm">
+        <label for="categoryType">Category Type:</label>
+        <input type="text" id="categoryType" name="categoryType" required><br><br>
+        
+        <label for="categoryName">Category Name:</label>
+        <input type="text" id="categoryName" name="categoryName" required><br><br>
+        
+        <input type="submit" value="Add Category">
+    </form>
+
+    <!-- Include jQuery or a JavaScript library for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // JavaScript code to handle form submission
+        $(document).ready(function() {
+            $("#categoryForm").submit(function(e) {
+                e.preventDefault();
+
+                // Get form data
+                var formData = {
+                    categoryName: $("#categoryName").val(),
+                    categoryType: $("#categoryType").val()
+                };
+
+                // Send AJAX POST request with JSON data
+                $.ajax({
+                    type: "POST",
+                    url: "/fyp/category/create",
+                    contentType: "application/json", // Set Content-Type header
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        // Handle success response
+                        alert("Category Added");
+                        console.log(response);
+                        
+                    },
+                    error: function(error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

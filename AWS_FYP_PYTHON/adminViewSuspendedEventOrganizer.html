@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p>Hello, <label id="email"></label></p>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <a href="adminViewNewEventOrganizer.html">View New Event Organizers Sign Ups</a>
+            <a href="adminViewSuspendedEventOrganizer.html">View Suspended Event Organizers</a>
+
+            
+            <table id="userTable">
+                <h1>Event Organizers</h1>
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Email</th>
+                        <th>Company Name</th>
+                        <th>UEN</th>
+                        <th>Company Type</th>
+                        <th>Phone</th>
+                        <th>Country</th>
+                        <th>Postal Code</th>
+                        <th>Address 1</th>
+                        <th>Address 2</th>
+                        <th>Approval Status</th>
+                        <th colspan="2">Action</th>
+                        <!-- Add more table headers for other user attributes -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User data will be displayed here -->
+                </tbody>
+                
+        </div>
+       
+                
+    </div>
+     <!-- Include your JavaScript code directly in the HTML file -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script>
+         // JavaScript code here
+         $(document).ready(function() {
+            
+            // Fetch the user type from the session
+            var userType = sessionStorage.getItem("user_type");
+            console.log(userType)
+            var email = sessionStorage.getItem("email");
+            console.log(email);
+            if (userType !== "1") {
+            // User is not an admin, redirect to another page or show an error message
+                window.location.href = "/accessdenied.html"; // Replace with your access denied page
+            } else {
+                var emailLabel = document.getElementById("email");
+                emailLabel.textContent = email;
+                console.log(emailLabel.textContent);
+             // Fetch user data and populate the table
+             $.ajax({
+                 type: "GET",
+                 url: "/fyp/user/getSuspendedEventOrganizers",
+                 dataType: "json",
+                 success: function(response) {
+                     if (response.code === 200) {
+                         var userData = response.data;
+ 
+                        // Loop through the user data and populate the table rows
+                        var tableBody = $("#userTable tbody");
+                         for (var i = 0; i < userData.length; i++) {
+                             var user = userData[i];
+                             var row = $("<tr>");
+                            
+                             row.append($("<td>").text(user.eventOrganizerId));
+                             row.append($("<td>").text(user.email));
+                             row.append($("<td>").text(user.companyName));
+                             row.append($("<td>").text(user.UENo));
+                             row.append($("<td>").text(user.companyType));
+                             row.append($("<td>").text(user.phone));
+                             row.append($("<td>").text(user.country));
+                             row.append($("<td>").text(user.postal_Code));
+                             row.append($("<td>").text(user.address1));
+                             row.append($("<td>").text(user.address2));
+                             row.append($("<td>").text(user.status));
+                            
+                            
+                             // Add more table cells for other user attributes
+                              // Add a button to each row
+                            
+                            var button2 = $("<button>").text("UnSuspend User");    
+                            button2.on("click", function() {
+                            var emailv = $(this).closest("tr").find("td:eq(1)").text(); // Get the email from the first cell of the clicked row
+                            $.ajax({
+                                    type:"POST",
+                                    url:"/fyp/user/UnSuspendEventOrganizer?email=" + emailv,
+                                    dataType: "json",
+                                    success: function(response) {
+                                        if (response.code === 200) {
+                                        // Handle success - for example, update the UI to reflect the status change
+                                            alert("Event organizer Unsuspend successfully!");
+                                        // You can add more UI updates here if needed
+                                        } else {
+                                        // Handle other status codes or errors
+                                            alert("Failed to Unsuspend event organizer. " + response.message);
+                                        }
+                                    },
+                                    error: function(error) {
+                                    // Handle Ajax error
+                                    alert("An error occurred while making the request: " + error.statusText);
+                                    }
+                                });
+                            });
+    
+                             
+                             row.append($("<td>").append(button2));
+                             tableBody.append(row);
+                         }
+                     } else {
+                         // Handle error or empty response
+                         console.error("Failed to fetch user data.");
+                     }
+                 },
+                 error: function(error) {
+                     console.error("Error fetching user data:", error);
+                 }
+             });
+             $.ajax({
+                 type: "GET",
+                 url: "/fyp/user/getEventGoers",
+                 dataType: "json",
+                 success: function(response) {
+                     if (response.code === 200) {
+                         var userData = response.data;
+ 
+                         // Loop through the user data and populate the table rows
+                         var tableBody = $("#userTable2 tbody");
+                         for (var i = 0; i < userData.length; i++) {
+                             var user = userData[i];
+                             var row = $("<tr>");
+                             row.append($("<td>").text(user.eventGoerId));
+                             row.append($("<td>").text(user.email));
+                             row.append($("<td>").text(user.fname));
+                             row.append($("<td>").text(user.lname));
+                             row.append($("<td>").text(user.dob));
+                             row.append($("<td>").text(user.phone));
+                             row.append($("<td>").text(user.country));
+                             row.append($("<td>").text(user.postal_Code));
+                             row.append($("<td>").text(user.address1));
+                             row.append($("<td>").text(user.address2));
+                            
+                             // Add more table cells for other user attributes
+                              // Add a button to each row
+                            var button = $("<button>").text("View User");
+                            button.on("click", function() {
+                            var emailv = $(this).closest("tr").find("td:eq(1)").text(); // Get the email from the first cell of the clicked row
+                            // Redirect to another page and pass the email as a query parameter
+                            window.location.href = "adminViewEventGoer.html?email=" + encodeURIComponent(emailv);
+                            });
+    
+                             row.append($("<td>").append(button));
+                             tableBody.append(row);
+                         }
+                     } else {
+                         // Handle error or empty response
+                         console.error("Failed to fetch user data.");
+                     }
+                 },
+                 error: function(error) {
+                     console.error("Error fetching user data:", error);
+                 }
+             });
+             
+            }
+         });
+     </script>
+</body>
+</html>

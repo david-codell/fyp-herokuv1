@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up As Event Goer</title>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form method="POST" action="/fyp/registerEventGoer">
+        
+       
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <label for="fname">First Name:</label>
+        <input type="fname" id="fname" name="fname" required><br><br>
+        <label for="lname">Last Name:</label>
+        <input type="lname" id="lname" name="lname" required><br><br>
+        <label for="dob">Date Of Birth:</label>
+        <input type="date" id="dob" name="dob" required><br><br>
+        <label for="phone">Phone Number:</label>
+        <input type="phone" id="phone" name="phone" required><br><br>
+        <label for="country">Country:</label>
+        <input type="country" id="country" name="country" required><br><br>
+        <label for="postalcode">Postal Code:</label>
+        <input type="postalcode" id="postalcode" name="postalcode" required><br><br>
+        <label for="address1">Address1:</label>
+        <input type="address1" id="address1" name="address1" required><br><br>
+        <label for="address2">Address2:</label>
+        <input type="address2" id="address2" name="address2" required><br><br>
+        <input type="text" id="usertype" name="usertype" value="2" hidden required><br><br>
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>

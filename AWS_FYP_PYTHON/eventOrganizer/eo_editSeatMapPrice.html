@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+     
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+     
+
+      img{
+          display: block; /* Make the image a block-level element */
+      margin-left: auto; /* Auto margin to the left */
+      margin-right: auto; /* Auto margin to the right */
+
+      }
+     
+      .centered-h2 {
+        
+        margin: 0 auto; /* Center the element horizontally */
+        text-align: center; /* Center the text inside the element */
+      }
+
+        .centered-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* This sets the container to take up the full viewport height */
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+            grid-template-rows: repeat(4, auto); /* Four rows with auto height */
+            gap: 20px; /* Adjust the gap between form elements */
+        }
+
+        /* Style for individual form items */
+        .form-item {
+            margin-bottom: 20px; /* Adjust the vertical spacing between form items */
+        }
+
+        /* Optional: Add more CSS styling for labels, inputs, etc. */
+        .form-item label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .form-item input[type="text"],
+        .form-item input[type="email"],
+        .form-item textarea {
+            width: 100%;
+            padding: 5px;
+        }
+
+        .spacer {
+        white-space: nowrap;
+    }
+
+    label {
+        flex: 1;
+        font-weight: bold;
+        /*white-space: nowrap; /* Prevent label from wrapping */
+        width: 140px;
+        display: inline-block;
+        margin: 0.2cm;
+      }
+             /* Dropdown Styles */
+             .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #908e8e;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+       .dropdown-content li {
+            padding: 10px;
+        }
+
+        .dropdown-content li a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .dropdown-content li:hover {
+            background-color: #555;
+        }
+
+        .dropdown-item:hover .dropdown-content {
+            display: block;
+        }
+
+        .table1
+      {
+            border-collapse: collapse;
+         
+            margin-right: 10px; /* Adjust the spacing between tables */
+        }
+
+        .table2
+      {
+            border-collapse: collapse;
+
+        
+            margin-left: 10px; /* Adjust the spacing between tables */
+        }
+
+
+        
+        /* Style for table cells (optional) */
+        .table1 td,
+        .table2 td {
+
+            padding: 5px;
+        }
+   
+       
+   
+    </style>
+      <link rel="stylesheet" href="../../styles.css">
+      <link rel="stylesheet" href="../../nav-style.css">
+    
+  </head>
+
+  <body>
+
+    <div class="layout">
+      <h1 class="centered-h2">View Event</h1>
+      <table class="table1">
+          <thead>
+              <tr>
+                  <th>Event ID</th>
+                  <td>{{ event.eventid }}</td>
+              </tr>
+              <tr>
+                  <th>Event Name</th>
+                  <td>{{ event.eventname }}</td>
+                </tr>
+              <tr>
+                  <th>Event Date Time</th>
+                  <td>{{ event.eventdatetime }}</td>
+                </tr>
+              </tr>
+              <tr>  
+                  <th>Event Description</th>
+                  <td>{{ event.eventdescription }}</td>
+                </tr>
+              </tr>
+              <tr>
+                  <th>Venue Name</th>
+                  <td>{{ event.venuename }}</td>
+                </tr>
+              <tr>
+                  <th>Capacity</th>
+                  <td>{{ event.capacity }}</td>
+                </tr>
+              </tr>
+           
+              <tr>
+                  <th>Address</th>
+                  <td>{{ event.address }}</td>
+                </tr>
+              </tr>
+                <tr>
+                  <th>Status</th>
+                  <td>{{ event.status }}</td>
+                </tr>
+                  
+          </thead>
+          
+      </table>
+      <img src="seatmap.jpg" alt="SeatMap">
+</div>
+
+
+
+<form action="{{ url_for('update_seatmap_prices', eventid=event.eventid) }}" method="POST">
+  <!-- Hidden input to include eventid -->
+  <input type="hidden" name="eventid" value="{{ event.eventid }}">
+  <table class="table1">
+      <tr>
+          <td>
+              <h3 class="centered-h2">Seat Price</h3>
+              <tbody>
+                  <tr>
+                      <td>Category 1:</td>
+                      <td><input type="text" name="cat1" value="{{ cat1 }}" required></td>
+                  </tr>
+                  <tr>
+                      <td>Category 2:</td>
+                      <td><input type="text" name="cat2" value="{{ cat2 }}" required></td>
+                  </tr>
+                  <tr>
+                      <td>Category 3:</td>
+                      <td><input type="text" name="cat3" value="{{ cat3 }}" required></td>
+                  </tr>
+                  <tr>
+                      <td>Category 4:</td>
+                      <td><input type="text" name="cat4" value="{{ cat4  }}" required></td>
+                  </tr>
+              </tbody>
+          </td>
+      </tr>
+  </table>
+  <div class="form-item">
+      <input type="submit" value="Submit">
+  </div>
+
+
+  <table class = "table2">
+    <tr>
+        <td>
+          <h3 class="centered-h2">Seat Capacity</h3>
+            <label for="name1">Cat 1:</label>
+            <input type="text" name="cat1_capacity" required>
+            <label for="name1">Full</label>
+            
+        </td>
+    </tr>
+
+  <tr>
+      <td>
+        <label for="name1">Cat 2:</label>
+        <input type="text" name="cat2_capacity" required>
+        <label for="name1">Full</label>
+
+        
+      </td>        
+  </tr>
+
+  <tr>
+    <td>
+      <label for="name1">Cat 3:</label>
+      <input type="text"  name="cat3_capacity" required>
+      <label for="name1">Full</label>
+    </td>          
+</tr>
+
+<tr>
+  <td>
+    <label for="name1">Cat 4:</label>
+    <input type="text"  name="cat4_capacity" required>
+    <label for="name1">Selling fast</label>
+  </td>      
+</tr>
+</table>
+
+
+</form>
+</body>
+    
+
+</body>
+</html>
+

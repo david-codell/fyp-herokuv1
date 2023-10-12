@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up As Event Goer</title>
+</head>
+
+<body>
+    <h1>Tell us your interests!</h1>
+    <form id="preferenceForm"></form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Send an ajax request to get the data for the checkboxes
+            $.ajax({
+                type: "GET",
+                url: "/fyp/category/getAll",
+                dataType: "json",
+                success: function (response) {
+                    if (response.code === 200) {
+                        var userData = response.data;
+
+                        var prefForm = $("#preferenceForm");
+
+                        $.each(userData, function (data, a) {
+
+                            console.log(data);
+                            console.log(a);
+
+                            var catDiv = $("<div>").attr("id", a.categoryType);
+                            
+                            var divLabel = $("<h2>").text(a.categoryType);
+                            var prev = document.getElementById(a.categoryType);
+                            console.log(prev);
+
+                            if (prev == null) {
+                                prefForm.append(divLabel).append(catDiv);
+                            };
+                            var catDiv2 = $("#" + a.categoryType);    
+                            console.log(catDiv2);
+
+                            
+
+                            // Create a checkbox element
+                            var checkbox = $("<input>").attr("type", "checkbox").attr("name", a.categoryName).attr("value", a.categoryId);
+                            console.log(a.categoryId);
+                            // Create a label element
+                            var label = $("<label>").text(a.categoryName);
+                            console.log(a.categoryName);
+
+
+                            // Append the checkbox and label to the form
+                            catDiv2.append("&emsp;").append(checkbox).append(label);
+                            
+                            if (data % 2 == 1) {
+                                catDiv2.append("<br>");
+                            };
+                            /*
+                            console.log(userData[data]);
+                            console.log(userData[data].categoryId);
+                            console.log(userData[data].categoryType);
+                            */
+                        });
+
+
+                        // Loop through the user data and populate the table rows
+
+                        /*for (var i = 0; i < userData.length; i++) {
+                            var user = userData[i];
+                            var row = $("<tr>");
+
+                            var CatType = $("<td>").attr("", user.CategoryType);
+
+                            // Create a checkbox element
+                            var checkbox = $("<input>").attr("type", "checkbox").attr("name", "checkbox").attr("value", user.categoryId);
+
+                            // Create a label element
+                            var label = $("<label>").text(user.categoryName);
+
+                            // Append the checkbox and label to the form
+                            row.append(checkbox).append(label).append("<br>");
+                            row.append("<br>");
+
+                            prefForm.append(row);
+
+                        }*/
+                        var button = $("<input>").attr("type", "submit").attr("value", "Finish");
+                        prefForm.append("<br><br>").append(button).append("<br>");
+
+                    } else {
+                        // Handle error or empty response
+                        console.error("Failed to fetch user data.");
+                    }
+                },
+                error: function (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

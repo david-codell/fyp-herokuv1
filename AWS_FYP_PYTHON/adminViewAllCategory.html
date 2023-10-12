@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p>Hello, <label id="email"></label></p>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <a href="adminViewNewEventOrganizer.html">View New Event Organizers Sign Ups</a>
+            <a href="adminViewSuspendedEventOrganizer.html">View Suspended Event Organizers</a>
+
+            
+            <table id="categoryTable">
+                <h1>Event Organizers</h1>
+                <thead>
+                    <tr>
+                        <th>Category Id</th>
+                        <th>Category Type</th>
+                        <th>Category Name</th>
+                       
+                        <th colspan="2">Action</th>
+                        <!-- Add more table headers for other user attributes -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User data will be displayed here -->
+                </tbody>
+                
+        </div>
+       
+          
+    </div>
+     <!-- Include your JavaScript code directly in the HTML file -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script>
+         // JavaScript code here
+         $(document).ready(function() {
+            
+            // Fetch the user type from the session
+            var userType = sessionStorage.getItem("user_type");
+            console.log(userType)
+            var email = sessionStorage.getItem("email");
+            console.log(email);
+            if (userType !== "1") {
+            // User is not an admin, redirect to another page or show an error message
+                window.location.href = "/accessdenied.html"; // Replace with your access denied page
+            } else {
+                var emailLabel = document.getElementById("email");
+                emailLabel.textContent = email;
+                console.log(emailLabel.textContent);
+             // Fetch user data and populate the table
+             $.ajax({
+                 type: "GET",
+                 url: "/fyp/category/getAll",
+                 dataType: "json",
+                 success: function(response) {
+                     if (response.code === 200) {
+                         var userData = response.data;
+ 
+                        // Loop through the user data and populate the table rows
+                        var tableBody = $("#categoryTable tbody");
+                         for (var i = 0; i < userData.length; i++) {
+                             var user = userData[i];
+                             var row = $("<tr>");
+                            
+                             row.append($("<td>").text(user.categoryId));
+                             row.append($("<td>").text(user.categoryType));
+                             row.append($("<td>").text(user.categoryName));
+                            
+                            
+                             // Add more table cells for other user attributes
+                              // Add a button to each row
+                            var button = $("<button>").text("Edit Category");
+                            var button2 = $("<button>").text("Suspend Category");    
+                            button.on("click", function() {
+                            var categoryIdv = $(this).closest("tr").find("td:eq(0)").text(); // Get the email from the first cell of the clicked row
+                            // Redirect to another page and pass the email as a query parameter
+                            window.location.href = "adminViewCategory.html?categoryId=" + encodeURIComponent(categoryIdv);
+                            });
+                            button2.on("click", function() {
+                            var categoryIdv = $(this).closest("tr").find("td:eq(0)").text(); // Get the email from the first cell of the clicked row
+                            $.ajax({
+                                    type:"DELETE",
+                                    url:"/fyp/category/suspend?categoryId=" + categoryIdv,
+                                    dataType: "json",
+                                    success: function(response) {
+                                        if (response.code === 200) {
+                                        // Handle success - for example, update the UI to reflect the status change
+                                            alert("Category suspended successfully!");
+                                        // You can add more UI updates here if needed
+                                        } else {
+                                        // Handle other status codes or errors
+                                            alert("Failed to suspend category. " + response.message);
+                                        }
+                                    },
+                                    error: function(error) {
+                                    // Handle Ajax error
+                                    alert("An error occurred while making the request: " + error.statusText);
+                                    }
+                                });
+                            });
+    
+                             row.append($("<td>").append(button));
+                             row.append($("<td>").append(button2));
+                             tableBody.append(row);
+                         }
+                     } else {
+                         // Handle error or empty response
+                         console.error("Failed to fetch user data.");
+                     }
+                 },
+                 error: function(error) {
+                     console.error("Error fetching user data:", error);
+                 }
+             });
+           
+             
+            }
+         });
+     </script>
+</body>
+</html>

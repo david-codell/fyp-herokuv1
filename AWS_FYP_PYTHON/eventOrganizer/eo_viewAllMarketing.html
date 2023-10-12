@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+ .layout {
+      float: inline-end;
+      border: 3px solid rgb(134, 115, 5);
+      margin: 5px 10px;
+      color: black;
+      z-index: 0;
+    box-shadow: 5px 5px 15px darkolivegreen;
+    
+    border-radius: 7px;
+    }
+
+    .layout *{
+      float: inline-end;
+      padding: 5px 0px;
+      color: black;
+    }
+
+    .layout h3{
+        border-top: 2px solid rgb(134, 115, 5);
+        border-bottom: 2px solid rgb(134, 115, 5);
+        padding-left: 10px;
+        margin: 0;
+        background-color: rgba(3, 99, 155, 0.671);
+    }
+
+    .centered-h2 {
+      vertical-align: middle;
+      margin: 0;
+      padding: 5px 0px;
+      /* Center the element horizontally */
+      text-align: center;
+      /* Center the text inside the element */
+      position: relative;
+      border-bottom: 2px solid rgb(134, 115, 5);
+      background-color: darkseagreen;
+      color: black;
+    }
+
+
+
+
+    .search-filter-bar {
+      display: flex;
+      align-items: center;
+      width: 100px;
+      border-radius: 20px;
+      /* Rounded border */
+      padding: 5px 10px;
+    }
+
+    /* Style for the search input */
+    .search-input {
+      flex: 1;
+      /* Take up available space */
+      border-radius: 20px;
+      outline: none;
+      padding: 5px;
+      width: 750px;
+    }
+
+    /* Style for the filter bar */
+    .filter-button {
+      background-color: white;
+      border: none;
+      border-radius: 20px;
+      /* Rounded border */
+      padding: 5px 10px;
+      margin-left: 450px;
+      border-width: 500px;
+
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-left: 5px ;
+      
+    }
+
+    tr{
+      height: 70px;
+    }
+    
+    th,
+    td {
+      border-bottom: 2px solid rgb(134, 115, 5);
+      /* Add the bottom border */
+      padding: 8px 0px;
+      text-align: left;
+    }
+
+
+    tr:last-child td {
+      border-bottom: none;
+      /* Remove bottom border from the last row */
+    }
+
+
+    .button {
+      font-size: 14px;
+      white-space: nowrap;
+      background-color: white;
+      color: black;
+      padding: 14px 0;
+      cursor: pointer;
+      width: 180px;
+      border-radius: 18px;
+      float: right;
+      /* Move the button to the right */
+      margin-right: 100px;
+      /* Add a slight gap on the right side */
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 2px 2px 10px darkolivegreen;
+    }
+
+    .button:hover{
+      background-color: darkseagreen;
+    }
+    
+ 
+    </style>
+      <link rel="stylesheet" href="../../styles.css">
+      <link rel="stylesheet" href="../../nav-style.css">
+    
+  </head>
+
+  <body>
+
+    <div id="navbar"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../navbar.js"></script>
+
+    <div class="layout">
+     
+
+      <h1 class="centered-h2">Marketing & Campaign List </h1>
+
+      <div class="search-filter-bar">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search">
+        </div>
+        <div class="filter-button">
+            <select id="filter">
+                <option value="Filter">Filter</option>
+                <option value="category1">Event ID</option>
+                <option value="category2">Event Name</option>
+                <option value="category3">Event Date Time</option>
+                <option value="category4">Marketing Name</option>
+                <option value="category5">Date Start</option>
+                <option value="category5">Date End</option>
+                 
+            </select>
+        </div>
+    
+  </div>
+
+
+	
+		  
+ <table id="marketingTable">
+            <h1>Marketing Campaigns</h1>
+            <thead>
+                <tr>
+                    <th>Event ID</th>
+                <th>Event Name</th>
+                <th>Event Date Time</th>
+                <th>Marketing Name</th>
+                <th>Date Start</th>
+                <th>Date End</th>
+                    <th colspan="2">Action</th>
+                    <!-- Add more table headers for other user attributes -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User data will be displayed here -->
+            </tbody>
+        </table>
+ <!-- Script tag should be placed here, at the end of the body -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+     
+		
+		$(document).ready(function() {
+		
+
+                $.ajax({
+                    type: "GET",
+                    url: "/fyp/marketing/getAll",
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.code === 200) {
+                            var marketingData = response.data;
+                            var tableBody = $("#marketingTable tbody");
+                            for (var i = 0; i < marketingData.length; i++) {
+                                var marketingRec = marketingData[i];
+                                var row = $("<tr>");
+                                row.append($("<td>").text(marketingRec.marketingId));
+                                row.append($("<td>").text(marketingRec.eventName));
+                                row.append($("<td>").text(marketingRec.eventDateTime));
+                                row.append($("<td>").text(marketingRec.marketingName));
+                                row.append($("<td>").text(marketingRec.dateStart));
+                                row.append($("<td>").text(marketingRec.dateEnd));
+                                
+            
+                                var button = $("<button>").text("View/Edit Details");
+                                button.on("click", function() {
+                                    var venuev = $(this).closest("tr").find("td:eq(0)").text();
+                                    window.location.href = "Viewmarketing.html";
+                                });
+            
+                                row.append($("<td>").append(button));
+                                tableBody.append(row);
+                            }
+                        } else {
+                            console.error("Failed to fetch Marketing data.");
+                            console.error(response); // Log the entire response for debugging
+                        }
+                    },
+                    error: function(error) {
+                        console.error("Error fetching Marketing data", error);
+                    }
+                });
+				         
+            });
+		
+		
+
+      </script>
+      
+</body>
+      
+    </div>
+  </body>
+</html>

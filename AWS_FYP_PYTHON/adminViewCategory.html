@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p>Hello, <label id="email"></label></p>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <form id="userForm">
+                <h1>Category Details</h1>
+                <label for="categoryId">Category ID:</label>
+                <input type="text" id="categoryId" name="categoryId" readonly><br>
+                <label for="categoryType">Category Type:</label>
+                <input type="text" id="categoryType" name="categoryType"><br>
+                <label for="categoryType1">Category Type:</label>
+                <select id="categoryType1" name="categoryType1"><br>
+                    <label for="categoryName">Category Name:</label>
+                    <input type="text" id="categoryName" name="categoryName"><br>
+
+                    <!-- Add more input fields for other user attributes -->
+                    <button id="Edit">Edit</button>
+                    <button id="update">Update</button>
+            </form>
+
+
+        </div>
+        <!-- Include your JavaScript code directly in the HTML file -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            // JavaScript code here
+            $(document).ready(function () {
+
+                // Fetch the user type from the session
+                var userType = sessionStorage.getItem("user_type");
+                console.log(userType)
+                var sessionCategoryId = sessionStorage.getItem("categoryId");
+                console.log("Session CategoryId:", sessionCategoryId)
+
+                /*         */
+                console.log("Session CategoryId (Before Setting):", sessionCategoryId);
+
+                var categoryIdField = $("#categoryId");
+                categoryIdField.val(sessionCategoryId);
+                console.log("CategoryId Field Value:", categoryIdField.val());
+
+                var categoryidLabel = document.getElementById("categoryId");
+                categoryidLabel.textContent = sessionCategoryId;
+                console.log(categoryidLabel.textContent);
+
+                var categoryNameLabel = document.getElementById("categoryId");
+                categoryNameLabel.textContent = sessionCategoryId;
+                console.log(categoryNameLabel.textContent);
+
+                // Get venueId from URL query parameters
+                const queryParams = new URLSearchParams(window.location.search);
+                const categoryIdFromUrl = queryParams.get("categoryId");
+                console.log("CategoryId from URL:", categoryIdFromUrl);
+
+
+
+                var urllink = "/fyp/category/getCategoryById?categoryId=" + categoryIdFromUrl;
+                console.log("Fetch URL:", urllink);
+
+                // Fetch user data and populate the table
+                $.ajax({
+                    type: "GET",
+                    url: urllink,
+                    dataType: "json",
+                    beforeSend: function () {
+                        console.log("Before making the Ajax request");
+                    },
+                    success: function (response) {
+                        if (response.code === 200) {
+                            var category = response.data[0]; // Assuming there is only one user in the response
+
+                            // Populate the form fields with user data
+                            $("#categoryId").val(category.categoryId);
+                            console.log("Category Id:", category.categoryId);
+                            $("#categoryType").val(category.categoryType);
+                            console.log("Category Type:", category.categoryType);
+                            $("#categoryName").val(category.categoryName);
+                            console.log("Category Type:", category.categoryName);
+
+
+
+                            // Add more code here to populate other form fields if needed
+                            // Handle the "View User" button click
+                            /*$("#update").on("click", function() {
+                               
+                               var updatedCategory = {
+                               categoryId: category.categoryId,
+                               categoryType: $("#categoryType").val(),
+                               categoryName: $("#categoryName").val()
+                               }
+                               // Redirect to another page and pass the ID as a query parameter
+                               window.location.href = "adminViewCategory.html?categoryId=" + encodeURIComponent(id);
+                           });*/
+                            $("#update").on("click", function (e) {
+                                e.preventDefault();
+
+                                var updatelink = "/fyp/category/update?categoryId=" + categoryIdFromUrl;
+                                console.log("Fetch URL:", updatelink);
+                                // Get form data
+                                var updatedCategoryId = $("#categoryId").val();
+                                var updatedCategoryName = $("#categoryName").val();
+                                var updatedCategoryType = $("#categoryType").val();
+
+
+                                var updatedData = {
+                                    categoryId: updatedCategoryId,
+                                    categoryName: updatedCategoryName,
+                                    categoryType: updatedCategoryType
+                                };
+                                // Send AJAX POST request with JSON data
+                                $.ajax({
+                                    type: "POST",
+                                    url: updatelink,
+                                    contentType: "application/json", // Set Content-Type header
+                                    data: JSON.stringify(updatedData),
+                                    success: function (response) {
+                                        // Handle success response
+                                        if (response.code === 200) {
+                                            // Update was successful, display a success message
+                                            $("#message").text("Category data updated successfully.");
+                                            console.log(response);
+                                        } else {
+                                            // Handle the case where the update failed
+                                            $("#message").text("Failed to update venue data.");
+                                            console.log(response);
+                                        }
+                                    },
+                                    error: function (error) {
+                                        // Handle error response
+                                        console.error(error);
+                                    }
+                                });
+                            });
+
+                        } else {
+                            // Handle error or empty response
+                            console.error("Failed to fetch user data.");
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error fetching user data:", error);
+                    }
+                });
+
+
+                /*                $("#Edit").click(function (e) {
+                                    e.preventDefault();
+                
+                                    // Get form data
+                                    $("#categoryType").prop("readonly", false);
+                                    $("#categoryName").prop("readonly", false);
+                
+                                });*/
+                $.ajax({
+                    url: '/fyp/category/getAll',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function () {
+                        var options = '';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#categoryType1').html(options);
+                    }
+                });
+
+
+
+            }
+            );
+
+
+
+        </script>
+</body>
+
+</html>

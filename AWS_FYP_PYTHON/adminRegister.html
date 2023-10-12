@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register For Admin</title>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form id="registrationForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <!-- Add an input field for user type (hidden) -->
+        <input type="hidden" id="userType" name="userType" value="1">
+        
+        <input type="submit" value="Register">
+    </form>
+
+    <!-- Include jQuery or a JavaScript library for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // JavaScript code to handle form submission
+        $(document).ready(function() {
+            $("#registrationForm").submit(function(e) {
+                e.preventDefault();
+
+                // Get form data
+                var formData = {
+                    email: $("#email").val(),
+                    password: $("#password").val(),
+                    userType: $("#userType").val()
+                };
+
+                // Send AJAX POST request with JSON data
+                $.ajax({
+                    type: "POST",
+                    url: "/fyp/user/create",
+                    contentType: "application/json", // Set Content-Type header
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        // Handle success response
+                        window.location.href = "login.html";
+                        console.log(response);
+                        
+                    },
+                    error: function(error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

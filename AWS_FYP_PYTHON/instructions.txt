@@ -1,0 +1,44 @@
+1) Install microsoft sql server management
+https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16#download-ssms
+
+Login credentials
+Server type : Database engine
+Server name : database-test1.cmhw6vxegmhy.ap-southeast-2.rds.amazonaws.com,1433
+Authentication : SQL Server Authentication
+Login : admin
+Password : Fyp2023!
+
+2) Setting up xamp
+
+1. Locate and open the Apache configuration file in your XAMPP installation. On Windows, this file is typically 
+located in C:\xampp\apache\conf\httpd.conf.
+
+2.Uncomment (remove the # symbol at the beginning of the line) the following lines to enable 
+the mod_proxy module and related modules:
+--------------------------------------------------------------
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+--------------------------------------------------------------
+3.Add the following lines to your Apache configuration file to configure the reverse proxy. Replace 8080 with the port where your Flask application is running. 
+You can also change the /myapp path to any desired path.
+--------------------------------------------------------------
+<Location /fyp>
+    ProxyPass http://localhost:8080/
+    ProxyPassReverse http://localhost:8080/
+</Location>
+--------------------------------------------------------------
+4. Restart apache if you started it previously
+
+3) Setting up python
+- install pip if you haven't 
+- install Flask
+- install pyodbc
+
+4) Place the folder in xampp\htdocs
+
+5) To run and test if its working
+- run open xampp control manager
+- run apache
+- open chrome, localhost/AWS_FYP/index.html
+
+

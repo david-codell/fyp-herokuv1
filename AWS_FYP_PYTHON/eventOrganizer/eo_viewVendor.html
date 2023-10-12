@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+
+      .content {
+        flex: 1;
+        padding: 0 1px;
+      }
+
+      .centered-h2 {
+        vertical-align: middle;
+        margin: center; /* Center the element horizontally */
+        text-align: center; /* Center the text inside the element */
+      }
+
+      .primary-button {
+        background-color: #1890ff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+      }
+
+      .container {
+        text-align: left;
+        max-width: 400px;
+        margin: auto;
+        padding: 10px;
+      }
+
+      .formcontainer {
+        text-align: center;
+        margin: 24px 50px 12px;
+      }
+
+      .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .imageform {
+        background: #5E5DF0;
+            border-radius: 999px;
+            box-shadow: 0 10px 20px -10px #5E5DF0;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            opacity: 1;
+            outline: 0 solid transparent;
+            padding: 8px 18px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: fit-content;
+            word-break: break-word;
+            border: 0;
+            align-items: center;
+            display: inline-block;
+        }
+
+      label {
+        flex: 1;
+        font-weight: bold;
+        /*white-space: nowrap; /* Prevent label from wrapping */
+        width: 140px;
+        display: inline-block;
+        margin: 0.2cm;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="datetime-local"],
+      input[type="countries"] {
+        flex: 2;
+        padding: 16px 10px;
+        border: 1px solid #ccc;
+        border-radius: 18px; /* Adjust the value to control the roundness */
+        padding: 4px;
+        width: 7cm;
+        margin: 5px;
+      }
+
+      select {
+        flex: 2;
+        padding: 16px 10px;
+        border: 1px solid #ccc;
+        border-radius: 18px;
+        padding: 4px;
+        width: 7cm;
+        margin: 5px;
+      }
+
+      button {
+        background-color: #0d99ff;
+        color: white;
+        padding: 14px 0;
+        margin: 10px 0;
+        cursor: pointer;
+        width: 150px;
+        border-radius: 18px;
+      }
+
+      /* Dropdown Styles */
+      .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #908e8e;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+       .dropdown-content li {
+            padding: 10px;
+        }
+
+        .dropdown-content li a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .dropdown-content li:hover {
+            background-color: #555;
+        }
+
+        .dropdown-item:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+
+    
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../nav-style.css">
+  
+</head>
+
+  <body>
+
+    <div id="navbar"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../navbar.js"></script>
+
+  <div class="layout">
+    
+    
+      <h1 class="centered-h2">View Vendor</h1>
+      <form action="{{ url_for('update', eventid=vendor.eventid) }}" method="POST">
+      <form action="/action_page.php">
+        <div class="formcontainer">
+          <div class="container">
+            <div class="form-group">
+             
+              <label for="name"><strong>Event Name:</strong></label>
+              <input
+                type="text"
+                value = "{{vendor.eventname}}"
+                name="eventname"
+                required
+              />
+        
+            </div>
+            <div class="form-group">
+              <label for="datetime"><strong>Event Date Time:</strong></label>
+              <input
+                type="datetime-local"
+                value = "{{vendor.eventdatetime}}"
+                name="datetime"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="text"><strong>Event Description:</strong></label>
+              <input
+                type="text"
+                value = "{{vendor.eventdescription}}"
+                placeholder="Enter Event Description"
+                name="eventdescription"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="date"><strong>Venue Name:</strong></label>
+              <input
+                type="text"
+                value = "{{vendor.venuename}}"
+                placeholder="Enter Vendor Description"
+                name="venuename"
+                required
+              />
+            
+            </div>
+
+            <div class="form-group">
+              <label for="date"><strong>Vendor Name:</strong></label>
+              <input
+              type="text"
+              value = "{{vendor.vendorname}}"
+              placeholder="Enter Vendor Name"
+              name="vendorname"
+              required
+            />
+            </div>
+            <div class="form-group">
+              <label for="date"><strong>Vendor Type:</strong></label>
+              <input
+                type="text"
+                value = "{{vendor.vendortype}}"
+                placeholder="Enter Vendor Type"
+                name="vendortype"
+                required
+              />
+            </div>
+            
+        
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-sm" name="submit">Edit Vendor</button>
+              <button type="reset" class="btn btn-danger btn-sm">
+              <a href="{{ url_for('delete', eventid=vendor.eventid) }}" class="btn btn-danger btn-sm">Suspend Vendor</a>
+            </button>
+          </div>
+
+        </div>
+        
+
+        
+      </form>
+    </div>
+
+  </body>
+</html>

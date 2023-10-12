@@ -1,0 +1,63 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="loginForm" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Login">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Submit the login form
+            $("#loginForm").submit(function(event) {
+                event.preventDefault();
+
+                // Get form data
+                var email = $("#email").val();
+                var password = $("#password").val();
+                
+                // Send AJAX POST request to authenticate
+                $.ajax({
+                    type: "POST",
+                    url: "/fyp/user/login",
+                    contentType: "application/json",
+                    data: JSON.stringify({ "email": email, "password": password }),
+                    success: function(response) {
+                        if (response.message === "Admin login successful") {
+                            sessionStorage.setItem("user_type", "1");
+                            sessionStorage.setItem("email",email);
+                            window.location.href = "admindashboard.html";
+                        } else if (response.message === "Event Goer login successful") {
+                            sessionStorage.setItem("user_type", "2");
+                            sessionStorage.setItem("email",email);
+                            window.location.href = "eventgoerdashboard.html";
+                        } else if (response.message === "Event Organizer login successful") {
+                            sessionStorage.setItem("user_type", "3");
+                            sessionStorage.setItem("email",email);
+                            window.location.href = "eventorganizerdashboard.html";
+                        } else {
+                            alert("Authentication failed. Please check your email and password.");
+                        }
+                    },
+                    error: function(error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+/* Reset some default browser styles */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Global styles */
+body {
+    font-family: 'Segoe UI Light';
+    background-color: #f0f0f0;
+}
+
+.container1 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+header {
+    background-color: #ffcd29;
+    color: #fff;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+    
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+
+
+/* Hero section styles */
+.hero {
+    background-image: url(img/hero-background.jpg);
+    background-size: cover;
+    text-align: center;
+    color: white;
+    padding: 100px 0;
+}
+
+.hero h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffcd29;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.popup-button{
+    font-family: 'Segoe UI Light';
+    display: inline-block;
+    padding: 7px 20px;
+    height:41px;
+    background-color: #ffcd29;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    border-color: #ffcd29;
+    border-style: solid;
+    font-size: 15px;
+}
+.popup-button:hover{
+    background-color: #ffcd29;
+}
+
+.btn:hover {
+    background-color: #ffcd29;
+}
+ /* Styles for the modal (popup) */
+ .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styles for the modal content */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+
+/* Style for the close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #007BFF;
+    font-size: 24px;
+}
+
+/* Style for the image in the popup */
+.popup-image {
+    max-width: 700px;
+    
+}
+
+/* Featured events section styles */
+.featured-events {
+    padding: 50px 0;
+    background-color: #fff;
+}
+
+.event-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    display: inline-block;
+    width: calc(50% - 50px); /* Adjust the width as needed */
+    box-sizing: border-box;
+    
+}
+
+.event-card img {
+    width:350px;
+    height:450px;
+}
+
+/* About section styles */
+.about {
+    padding: 50px 0;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+/* Contact section styles */
+.contact {
+    padding: 50px 0;
+    text-align: center;
+}
+
+/* Footer styles */
+footer {
+    background-color: #ffcd29;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    nav ul {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    nav li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .event-card {
+        margin: 20px 0;
+    }
+}

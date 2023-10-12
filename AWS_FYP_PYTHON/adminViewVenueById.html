@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venue Update</title>
+</head>
+<body>
+    <h1>Update Venue Data</h1>
+
+    <div class="main-content">
+        <form id="venueForm">
+            <h1>Venue Details</h1>
+            <label for="venueId">Venue Id:</label>
+            <input type="text" id="venueId" name="venueId" readonly><br><br>
+
+            <label for="venueName">Venue Name:</label>
+            <input type="text" id="venueName" name="venueName" ><br><br>
+            
+            <label for="capacity">Capacity:</label>
+            <input type="text" id="capacity" name="capacity" ><br><br>
+    
+            <label for="postalcode">Postal Code:</label>
+            <input type="text" id="postalcode" name="postalcode" ><br><br>
+            
+            <label for="address1">Address1:</label>
+            <input type="text" id="address1" name="address1" ><br><br>
+
+            <label for="address2">Address2:</label>
+            <input type="text" id="address2" name="address2" ><br><br>
+
+            <!-- Add more input fields for other venue attributes -->
+            <button id="update">Update</button>
+            <button id="suspend">Suspend</button>
+        </form>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+              
+            // Fetch venue data and populate the form
+            var sessionvenue = sessionStorage.getItem("venueId");
+            var sessionvenuename = sessionStorage.getItem("venueName");
+            console.log(venueId)
+            console.log(venueName)
+            console.log(capacity)
+            console.log(postalcode)
+            console.log(address1)
+            console.log(address2)
+
+            var venueidLabel = document.getElementById("venueId");
+            venueidLabel.textContent = sessionvenue;
+            console.log(venueidLabel.textContent);
+
+            var venuenameLabel = document.getElementById("venueName");
+            venuenameLabel.textContent = sessionvenuename;
+            console.log(venuenameLabel.textContent);
+            
+            const queryParams = new URLSearchParams(window.location.search);
+            const venueidfromURL = queryParams.get("venueId");
+            console.log(venueidfromURL);
+            var urllink = "/fyp/venue/getVenueById?venueId=" + venueidfromURL;
+            $.ajax({
+                type: "GET",
+                url: urllink,
+                dataType: "json",
+                success: function(response) {
+                    if (response.code === 200) {
+                        var venue = response.data[0]; // Assuming there is only one venue in the response
+
+                        // Populate the form fields with venue data
+                        $("#venueId").val(venue.venueId);
+                        $("#venueName").val(venue.venueName);
+                        console.log("Venue Name:", venue.venueName);
+                        $("#capacity").val(venue.capacity);
+                        $("#postalcode").val(venue.postalcode);
+                        $("#address1").val(venue.address1);
+                        $("#address2").val(venue.address2);
+
+                       // Add more code here to populate other form fields if needed
+                             // Handle the "View User" button click
+                             $("#update").on("click", function() {
+                                var updatedVenueId = $("#venueId").val();
+                                var updatedVenueName = $("#venueName").val();
+                                var updatedCapacity = $("#capacity").val();
+                                var updatedPostalcode = $("#postalcode").val();
+                                var updatedAddress1 = $("#address1").val();
+                                var updatedAddress2 = $("#address2").val();
+                            
+                                // Create a JSON object with all the fields to update
+                                var updatedData = {
+                                    venueId: updatedVenueId,
+                                    venueName: updatedVenueName,
+                                    capacity: updatedCapacity,
+                                    postalcode: updatedPostalcode,
+                                    address1: updatedAddress1,
+                                    address2: updatedAddress2
+                                };
+                            
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/fyp/venue/updateVenueById',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(updatedData),
+                            
+                                    success: function(response) {
+                                        if (response.code === 200) {
+                                            // Update was successful, display a success message
+                                            $("#message").text("Venue data updated successfully.");
+                                        } else {
+                                            // Handle the case where the update failed
+                                            $("#message").text("Failed to update venue data.");
+                                        }
+                                    },
+                                    error: function(error) {
+                                        // Handle AJAX request failure
+                                        $("#message").text("Error updating venue data: " + error.responseText);
+                                    }
+                                });
+                            });
+                            
+                    } else {
+                        // Handle error or empty response
+                        console.error("Failed to fetch venue data.", response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching venue data:", error);
+                }
+            });
+        
+        });
+    </script>
+</body>
+</html>

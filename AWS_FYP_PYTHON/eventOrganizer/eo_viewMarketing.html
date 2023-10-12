@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+
+      .content {
+        flex: 1;
+        padding: 0 1px;
+      }
+
+      .centered-h2 {
+        vertical-align: middle;
+        margin: center; /* Center the element horizontally */
+        text-align: center; /* Center the text inside the element */
+      }
+
+      .primary-button {
+        background-color: #1890ff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+      }
+
+      .container {
+        text-align: left;
+        max-width: 400px;
+        margin: auto;
+        padding: 10px;
+      }
+
+      .formcontainer {
+        text-align: center;
+        margin: 24px 50px 12px;
+      }
+
+      .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .imageform {
+        background: #5E5DF0;
+            border-radius: 999px;
+            box-shadow: 0 10px 20px -10px #5E5DF0;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            opacity: 1;
+            outline: 0 solid transparent;
+            padding: 8px 18px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: fit-content;
+            word-break: break-word;
+            border: 0;
+            align-items: center;
+            display: inline-block;
+        }
+
+      label {
+        flex: 1;
+        font-weight: bold;
+        /*white-space: nowrap; /* Prevent label from wrapping */
+        width: 140px;
+        display: inline-block;
+        margin: 0.2cm;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="datetime-local"],
+      input[type="countries"] {
+        flex: 2;
+        padding: 16px 10px;
+        border: 1px solid #ccc;
+        border-radius: 18px; /* Adjust the value to control the roundness */
+        padding: 4px;
+        width: 7cm;
+        margin: 5px;
+      }
+
+      select {
+        flex: 2;
+        padding: 16px 10px;
+        border: 1px solid #ccc;
+        border-radius: 18px;
+        padding: 4px;
+        width: 7cm;
+        margin: 5px;
+      }
+
+      button {
+        background-color: #0d99ff;
+        color: white;
+        padding: 14px 0;
+        margin: 10px 0;
+        cursor: pointer;
+        width: 150px;
+        border-radius: 18px;
+      }
+
+      
+        /* Dropdown Styles */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #908e8e;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+       .dropdown-content li {
+            padding: 10px;
+        }
+
+        .dropdown-content li a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .dropdown-content li:hover {
+            background-color: #555;
+        }
+
+        .dropdown-item:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../nav-style.css">
+
+  </head>
+
+  <body>
+
+    <div id="navbar"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../navbar.js"></script>
+    
+    <div class="layout">
+      
+      <h1 class="centered-h2">View Marketing Campaign</h1>
+
+      <form action="/action_page.php"  id="viewmarketingform">
+        <div class="formcontainer">
+          <div class="container">
+            <div class="form-group">
+              <label for="uname"><strong>Event Name:</strong></label>
+              <input
+                type="text"
+                placeholder="Enter Event Name"
+                name="uname"
+                required
+				id="eventname"
+              />
+            </div>
+            <div class="form-group">
+              <label for="datetime"><strong>Event Date Time:</strong></label>
+              <input
+                type="datetime-local"
+                id="eventdatetime"
+                name="datetime"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="text"><strong>Marketing Name:</strong></label>
+              <input
+                type="text"
+                placeholder="Enter Marketing Name"
+                name="text"
+                required
+				id="marketingname"
+              />
+            </div>
+            <div class="form-group">
+              <label for="date"><strong>Date Start:</strong></label>
+              <input
+                type="date"
+                id="datestart"
+                name="datetime"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="date"><strong>Date End:</strong></label>
+              <input
+              type="date"
+              id="dateend"
+              name="date"
+              required
+            />
+            </div>
+            <div class="form-group">
+              <label for="text"><strong>Image:</strong></label>
+              <form class="imageform" action="upload.php" method="POST" enctype="multipart/form-data">
+                <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+                
+            </form>
+        
+          </div>
+          <button type="submit">Edit Details</button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <button type="submit">Suspend Campaign</button>
+        </div>
+
+      
+		 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#homepage").on("click", function() {
+            window.location.href = "viewAllMarketing.html";
+        });
+
+        $(document).ready(function() {        
+
+      
+         
+            //var urllink = "/fyp/marketing/getMarketingById?marketingId=" + marketingIdVal;
+			var urllink = "/fyp/marketing/getMarketingById?marketingId=" + 1;			
+            $.ajax({
+                type: "GET",
+                url: urllink,
+                dataType: "json",
+                success: function(response) {
+                    if (response.code === 200) {
+                        var marketingRec = response.data[0]; // Assuming there is only one marketing in the response
+
+                        // Populate the form fields with venue data                        
+                        $("#eventname").val(marketingRec.eventName);
+						console.log("eventname:", marketingRec.eventName);
+						var eventDate = new Date(marketingRec.eventDateTime);
+                  var formattedEventDate = eventDate.toISOString().split('T')[0]; // Convert to "YYYY-MM-DD" format
+						$("#eventdatetime").val(formattedEventDate);
+                        
+                        $("#marketingname").val(marketingRec.marketingName);
+                        $("#datestart").val(marketingRec.dateStart);
+                        $("#dateend").val(marketingRec.dateEnd);
+                    } else {
+                        // Handle error or empty response
+                        console.error("Failed to fetch marketing data.", response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching marketing data:", error);
+                }
+
+            })
+            
+            
+        
+        });
+		
+        </script>
+		
+		
+      </form>
+    </div>
+  </body>
+</html>
